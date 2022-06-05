@@ -1,9 +1,12 @@
 import { createWriteStream } from "fs";
 import * as path from "path";
+import { fileURLToPath } from "url";
 
 export const write = async () => {
   // Write your code here
-  const pathToFile = path.join(path.resolve(), "files", "fileToWrite.txt");
+  const pathToFolder = path.dirname(fileURLToPath(import.meta.url));
+
+  const pathToFile = path.join(pathToFolder, "files", "fileToWrite.txt");
   const writeStream = createWriteStream(pathToFile);
   writeStream.on("error", (err) => {
     throw new Error("FS operation failed");

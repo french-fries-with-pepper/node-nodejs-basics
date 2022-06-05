@@ -1,10 +1,13 @@
 import { cp } from "fs";
 import * as path from "path";
+import { fileURLToPath } from "url";
 
 export const copy = async () => {
   // Write your code here
-  const src = path.join(path.resolve(), "files");
-  const dest = path.join(path.resolve(), "files_copy");
+  const pathToFolder = path.dirname(fileURLToPath(import.meta.url));
+
+  const src = path.join(pathToFolder, "files");
+  const dest = path.join(pathToFolder, "files_copy");
   cp(
     src,
     dest,

@@ -3,16 +3,18 @@ import { readFile } from "fs/promises";
 import { release, version } from "os";
 import { createServer as createServerHttp } from "http";
 import { fileURLToPath } from "url";
+
 import "./files/c.js";
 const random = Math.random();
 
 let unknownObject;
+const pathToFolder = path.dirname(fileURLToPath(import.meta.url));
 
 const fileToImport =
   random > 0.5
-    ? path.join(path.resolve(), "files", "a.json")
-    : path.join(path.resolve(), "files", "b.json");
-    
+    ? path.join(pathToFolder, "files", "a.json")
+    : path.join(pathToFolder, "files", "b.json");
+
 unknownObject = JSON.parse(
   await readFile(new URL(fileToImport, import.meta.url))
 );
