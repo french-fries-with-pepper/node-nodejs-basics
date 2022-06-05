@@ -1,18 +1,21 @@
 import * as path from "path";
+import { readFile } from "fs/promises";
 import { release, version } from "os";
 import { createServer as createServerHttp } from "http";
 import { fileURLToPath } from "url";
-//require('./files/c');
-
+import "./files/c.js";
 const random = Math.random();
 
 let unknownObject;
 
-/* if (random > 0.5) {
-    unknownObject = require('./files/a.json');
-} else {
-    unknownObject = require('./files/b.json');
-} */
+const fileToImport =
+  random > 0.5
+    ? path.join(path.resolve(), "files", "a.json")
+    : path.join(path.resolve(), "files", "b.json");
+    
+unknownObject = JSON.parse(
+  await readFile(new URL(fileToImport, import.meta.url))
+);
 
 console.log(`Release ${release()}`);
 console.log(`Version ${version()}`);
@@ -21,11 +24,11 @@ console.log(`Path segment separator is "${path.sep}"`);
 console.log(`Path to current file is ${fileURLToPath(import.meta.url)}`);
 console.log(`Path to current directory is ${path.resolve()}`);
 
-export const createMyServer = createServerHttp((_, res) => {
+const createMyServer = createServerHttp((_, res) => {
   res.end("Request accepted");
 });
 
-/* module.exports = {
-    unknownObject,
-    createMyServer,
-}; */
+export default {
+  unknownObject,
+  createMyServer,
+};
